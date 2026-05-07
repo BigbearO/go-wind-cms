@@ -10,7 +10,11 @@ import (
 	conf "github.com/tx7do/kratos-bootstrap/api/gen/go/conf/v1"
 	"github.com/tx7do/kratos-bootstrap/bootstrap"
 
-	_ "github.com/tx7do/kratos-bootstrap/registry/etcd"
+	//_ "github.com/tx7do/kratos-bootstrap/registry/etcd"
+	_ "github.com/tx7do/kratos-bootstrap/config/nacos"
+
+	_ "github.com/tx7do/kratos-bootstrap/registry/nacos"
+
 	_ "github.com/tx7do/kratos-bootstrap/tracer"
 
 	authenticationV1 "go-wind-cms/api/gen/go/authentication/service/v1"
