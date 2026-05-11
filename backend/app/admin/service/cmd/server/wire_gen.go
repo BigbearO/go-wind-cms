@@ -16,7 +16,8 @@ import (
 )
 
 import (
-	_ "github.com/tx7do/kratos-bootstrap/registry/etcd"
+	_ "github.com/tx7do/kratos-bootstrap/config/nacos"
+	_ "github.com/tx7do/kratos-bootstrap/registry/nacos"
 	_ "github.com/tx7do/kratos-bootstrap/tracer"
 )
 
