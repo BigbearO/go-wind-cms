@@ -1,0 +1,9 @@
+logger:
+  type: std
+
+  zap:
+    level: "debug"
+    filename: "./logs/info.log"
+    max_size: 1
+    max_age: 30
+    max_backups: 5

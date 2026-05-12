@@ -1,0 +1,31 @@
+registry:
+  type: "nacos"
+  nacos:
+    address: "192.168.50.235"
+    port: 8848
+    namespace_id: xhf
+    username: nacos
+    password: nacos
+    timeout: "5s"
+    key: DEFAULT_GROUP
+    app_name: wind-game
+    app_key: wind-game
+
+config:
+  type: "nacos"
+  nacos:
+    address: "192.168.50.235"
+    port: 8848
+    username: nacos
+    password: nacos
+    key: DEFAULT_GROUP
+    timeout: 5000
+    namespaceId: xhf
+    group: DEFAULT_GROUP
+    beat_interval: 1000
+    data_id: wind.yaml
+    not_load_cache_at_start: false
+    update_cache_when_empty: true
+    log_dir: ./tmp/nacos/log
+    cache_dir: ./tmp/nacos/cache
+    log_level: info

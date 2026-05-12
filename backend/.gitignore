@@ -36,3 +36,6 @@ bin/
 
 # Go workspace file
 go.work
+
+.opencode
+openspec

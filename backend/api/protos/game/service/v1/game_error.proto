@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package game.service.v1;
+
+import "errors/errors.proto";
+
+// 游戏业务错误定义
+enum GameErrorReason {
+  option (errors.default_code) = 500;
+
+  // 400
+  BAD_REQUEST = 0 [(errors.code) = 400]; // 错误请求
+
+  // 404
+  NOT_FOUND = 100 [(errors.code) = 404]; // 找不到资源
+  ORDER_NOT_FOUND = 101 [(errors.code) = 404]; // 订单不存在
+  ACCOUNT_NOT_FOUND = 102 [(errors.code) = 404]; // 账号不存在
+
+  // 409
+  ACCOUNT_ALREADY_EXISTS = 200 [(errors.code) = 409]; // 账号已存在
+
+  // 422
+  INVALID_DAYS = 300 [(errors.code) = 422]; // 无效的天数
+
+  // 500
+  INTERNAL_SERVER_ERROR = 1000 [(errors.code) = 500]; // 内部服务器错误
+}

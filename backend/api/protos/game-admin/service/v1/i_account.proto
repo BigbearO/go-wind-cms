@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package game_admin.service.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pagination/v1/pagination.proto";
+
+import "game/service/v1/account.proto";
+
+// 游戏账号管理服务
+service AccountService {
+  // 获取账号列表
+  rpc List (pagination.PagingRequest) returns (game.service.v1.ListAccountResponse) {
+    option (google.api.http) = {
+      get: "/game-admin/v1/accounts"
+    };
+  }
+
+  // 获取账号详情
+  rpc Get (game.service.v1.GetAccountRequest) returns (game.service.v1.Account) {
+    option (google.api.http) = {
+      get: "/game-admin/v1/accounts/{id}"
+    };
+  }
+
+  // 创建账号
+  rpc Create (game.service.v1.CreateAccountRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/game-admin/v1/accounts"
+      body: "*"
+    };
+  }
+
+  // 更新账号
+  rpc Update (game.service.v1.UpdateAccountRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/game-admin/v1/accounts/{id}"
+      body: "*"
+    };
+  }
+
+  // 删除账号
+  rpc Delete (game.service.v1.DeleteAccountRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/game-admin/v1/accounts/{id}"
+    };
+  }
+
+  // 续期会员
+  rpc RenewMembership (game.service.v1.RenewMembershipRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/game-admin/v1/accounts:renew"
+      body: "*"
+    };
+  }
+}

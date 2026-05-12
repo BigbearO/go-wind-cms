@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package game_admin.service.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pagination/v1/pagination.proto";
+
+import "game/service/v1/order.proto";
+
+// 订单管理服务
+service OrderService {
+  // 获取订单列表
+  rpc List (pagination.PagingRequest) returns (game.service.v1.ListOrderResponse) {
+    option (google.api.http) = {
+      get: "/game-admin/v1/orders"
+    };
+  }
+
+  // 获取订单详情
+  rpc Get (game.service.v1.GetOrderRequest) returns (game.service.v1.Order) {
+    option (google.api.http) = {
+      get: "/game-admin/v1/orders/{id}"
+    };
+  }
+
+  // 创建订单
+  rpc Create (game.service.v1.CreateOrderRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/game-admin/v1/orders"
+      body: "*"
+    };
+  }
+
+  // 更新订单
+  rpc Update (game.service.v1.UpdateOrderRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/game-admin/v1/orders/{id}"
+      body: "*"
+    };
+  }
+
+  // 删除订单
+  rpc Delete (game.service.v1.DeleteOrderRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/game-admin/v1/orders/{id}"
+    };
+  }
+
+  // 创建订单并续期会员
+  rpc CreateOrderAndRenew (CreateOrderAndRenewRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/game-admin/v1/orders:renew"
+      body: "*"
+    };
+  }
+}
+
+// 创建订单并续期 - 请求
+message CreateOrderAndRenewRequest {
+  game.service.v1.Order order = 1;
+}

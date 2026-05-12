@@ -1,0 +1,220 @@
+syntax = "proto3";
+
+package game.service.v1;
+
+import "gnostic/openapi/v3/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "pagination/v1/pagination.proto";
+
+// 订单服务
+service OrderService {
+  // 查询订单列表
+  rpc List (pagination.PagingRequest) returns (ListOrderResponse) {}
+
+  // 统计订单数量
+  rpc Count (pagination.PagingRequest) returns (CountOrderResponse) {}
+
+  // 查询订单详情
+  rpc Get (GetOrderRequest) returns (Order) {}
+
+  // 创建订单
+  rpc Create (CreateOrderRequest) returns (google.protobuf.Empty) {}
+
+  // 更新订单
+  rpc Update (UpdateOrderRequest) returns (google.protobuf.Empty) {}
+
+  // 删除订单
+  rpc Delete (DeleteOrderRequest) returns (google.protobuf.Empty) {}
+}
+
+// 订单
+message Order {
+  // 订单状态
+  enum Status {
+    ORDER_STATUS_UNSPECIFIED = 0; // 未指定
+    PENDING = 1;    // 待支付
+    PAID = 2;       // 已支付
+    CANCELLED = 3;  // 已取消
+    REFUNDED = 4;   // 已退款
+  }
+
+  // 订单类型
+  enum OrderType {
+    ORDER_TYPE_UNSPECIFIED = 0; // 未指定
+    MEMBERSHIP = 1;  // 会员充值
+    RECHARGE = 2;    // 充值
+    OTHER = 100;     // 其他
+  }
+
+  optional uint64 id = 1 [
+    json_name = "id",
+    (gnostic.openapi.v3.property) = {description: "订单ID"}
+  ]; // 订单ID
+
+  optional string order_no = 2 [
+    json_name = "orderNo",
+    (gnostic.openapi.v3.property) = {description: "三方订单流水号"}
+  ]; // 三方订单流水号
+
+  optional string user_id = 3 [
+    json_name = "userId",
+    (gnostic.openapi.v3.property) = {description: "用户ID"}
+  ]; // 用户ID
+
+  optional OrderType order_type = 4 [
+    json_name = "orderType",
+    (gnostic.openapi.v3.property) = {description: "订单类型"}
+  ]; // 订单类型
+
+  optional Status status = 5 [
+    json_name = "status",
+    (gnostic.openapi.v3.property) = {description: "订单状态"}
+  ]; // 订单状态
+
+  optional int32 game_type = 6 [
+    json_name = "gameType",
+    (gnostic.openapi.v3.property) = {description: "游戏类型"}
+  ]; // 游戏类型
+
+  optional int32 days = 7 [
+    json_name = "days",
+    (gnostic.openapi.v3.property) = {description: "购买天数"}
+  ]; // 购买天数
+
+  optional string pay_amount = 8 [
+    json_name = "payAmount",
+    (gnostic.openapi.v3.property) = {description: "支付金额，单位分"}
+  ]; // 支付金额，单位分
+
+  optional int32 pay_type = 9 [
+    json_name = "payType",
+    (gnostic.openapi.v3.property) = {description: "支付渠道"}
+  ]; // 支付渠道
+
+  optional google.protobuf.Timestamp pay_time = 10 [
+    json_name = "payTime",
+    (gnostic.openapi.v3.property) = {description: "支付时间"}
+  ]; // 支付时间
+
+  optional google.protobuf.Timestamp expire_time = 11 [
+    json_name = "expireTime",
+    (gnostic.openapi.v3.property) = {description: "订单过期时间"}
+  ]; // 订单过期时间
+
+  optional string cancel_reason = 12 [
+    json_name = "cancelReason",
+    (gnostic.openapi.v3.property) = {description: "取消理由"}
+  ]; // 取消理由
+
+  optional google.protobuf.Timestamp cancel_time = 13 [
+    json_name = "cancelTime",
+    (gnostic.openapi.v3.property) = {description: "取消时间"}
+  ]; // 取消时间
+
+  optional int32 refund_status = 14 [
+    json_name = "refundStatus",
+    (gnostic.openapi.v3.property) = {description: "退款状态"}
+  ]; // 退款状态
+
+  optional google.protobuf.Timestamp refund_time = 15 [
+    json_name = "refundTime",
+    (gnostic.openapi.v3.property) = {description: "退款时间"}
+  ]; // 退款时间
+
+  optional string refund_channel = 16 [
+    json_name = "refundChannel",
+    (gnostic.openapi.v3.property) = {description: "退款渠道"}
+  ]; // 退款渠道
+
+  optional string remark = 17 [
+    json_name = "remark",
+    (gnostic.openapi.v3.property) = {description: "订单备注"}
+  ]; // 订单备注
+
+  optional string freight_fee = 18 [
+    json_name = "freightFee",
+    (gnostic.openapi.v3.property) = {description: "运费"}
+  ]; // 运费
+
+  optional uint32 tenant_id = 20 [
+    json_name = "tenantId",
+    (gnostic.openapi.v3.property) = {description: "租户ID"}
+  ]; // 租户ID
+
+  optional uint32 created_by = 100 [json_name = "createdBy", (gnostic.openapi.v3.property) = {description: "创建者用户ID"}]; // 创建者用户ID
+  optional uint32 updated_by = 101 [json_name = "updatedBy", (gnostic.openapi.v3.property) = {description: "更新者用户ID"}]; // 更新者用户ID
+  optional uint32 deleted_by = 102 [json_name = "deletedBy", (gnostic.openapi.v3.property) = {description: "删除者用户ID"}]; // 删除者用户ID
+
+  optional google.protobuf.Timestamp created_at = 200 [json_name = "createdAt", (gnostic.openapi.v3.property) = {description: "创建时间"}];// 创建时间
+  optional google.protobuf.Timestamp updated_at = 201 [json_name = "updatedAt", (gnostic.openapi.v3.property) = {description: "更新时间"}];// 更新时间
+  optional google.protobuf.Timestamp deleted_at = 202 [json_name = "deletedAt", (gnostic.openapi.v3.property) = {description: "删除时间"}];// 删除时间
+}
+
+// 查询订单列表 - 答复
+message ListOrderResponse {
+  repeated Order items = 1;
+  uint64 total = 2;
+}
+
+// 查询订单详情 - 请求
+message GetOrderRequest {
+  oneof query_by {
+    uint64 id = 1 [
+      (gnostic.openapi.v3.property) = {description: "ID", read_only: true},
+      json_name = "id"
+    ]; // ID
+
+    string order_no = 2 [
+      (gnostic.openapi.v3.property) = {description: "订单编号", read_only: true},
+      json_name = "orderNo"
+    ]; // 订单编号
+  }
+
+  optional google.protobuf.FieldMask view_mask = 100 [
+    json_name = "viewMask",
+    (gnostic.openapi.v3.property) = {
+      description: "视图字段过滤器，用于控制返回的字段"
+    }
+  ]; // 视图字段过滤器
+}
+
+// 创建订单 - 请求
+message CreateOrderRequest {
+  Order data = 1;
+}
+
+// 更新订单 - 请求
+message UpdateOrderRequest {
+  uint64 id = 1;
+
+  Order data = 2;
+
+  google.protobuf.FieldMask update_mask = 3 [
+    (gnostic.openapi.v3.property) = {
+      description: "要更新的字段列表",
+      example: {yaml : "status,remark"}
+    },
+    json_name = "updateMask"
+  ]; // 要更新的字段列表
+
+  optional bool allow_missing = 4 [
+    (gnostic.openapi.v3.property) = {description: "如果设置为true的时候，资源不存在则会新增(插入)"},
+    json_name = "allowMissing"
+  ]; // 如果设置为true的时候，资源不存在则会新增(插入)
+}
+
+// 删除订单 - 请求
+message DeleteOrderRequest {
+  oneof query_by {
+    uint64 id = 1 [
+      (gnostic.openapi.v3.property) = {description: "ID", read_only: true},
+      json_name = "id"
+    ]; // ID
+  }
+}
+
+message CountOrderResponse {
+  uint64 count = 1;
+}

@@ -4,7 +4,9 @@ const (
 	AdminService = "admin-service" // 后台服务
 	AppService   = "app-service"   // 前台服务
 
-	CoreService = "core-service" // 核心服务
+	CoreService      = "core-service"      // 核心服务
+	GameService      = "game-service"      // 游戏服务
+	GameAdminService = "game-admin-service" // 游戏管理后台BFF服务
 
 	DTMService = "dtm-service" // DTM服务
 )

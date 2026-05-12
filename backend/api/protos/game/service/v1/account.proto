@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package game.service.v1;
+
+import "gnostic/openapi/v3/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "pagination/v1/pagination.proto";
+
+// 游戏账号服务
+service AccountService {
+  // 查询账号列表
+  rpc List (pagination.PagingRequest) returns (ListAccountResponse) {}
+
+  // 统计账号数量
+  rpc Count (pagination.PagingRequest) returns (CountAccountResponse) {}
+
+  // 查询账号详情
+  rpc Get (GetAccountRequest) returns (Account) {}
+
+  // 创建账号
+  rpc Create (CreateAccountRequest) returns (google.protobuf.Empty) {}
+
+  // 更新账号
+  rpc Update (UpdateAccountRequest) returns (google.protobuf.Empty) {}
+
+  // 删除账号
+  rpc Delete (DeleteAccountRequest) returns (google.protobuf.Empty) {}
+
+  // 续期会员
+  rpc RenewMembership (RenewMembershipRequest) returns (google.protobuf.Empty) {}
+}
+
+// 游戏账号
+message Account {
+  optional uint64 id = 1 [
+    json_name = "id",
+    (gnostic.openapi.v3.property) = {description: "账号ID"}
+  ]; // 账号ID
+
+  optional string user_account = 2 [
+    json_name = "userAccount",
+    (gnostic.openapi.v3.property) = {description: "用户账号"}
+  ]; // 用户账号
+
+  optional string credential = 3 [
+    json_name = "credential",
+    (gnostic.openapi.v3.property) = {description: "用户登录凭证"}
+  ]; // 用户登录凭证
+
+  optional google.protobuf.Timestamp start_time = 4 [
+    json_name = "startTime",
+    (gnostic.openapi.v3.property) = {description: "会员开始时间"}
+  ]; // 会员开始时间
+
+  optional google.protobuf.Timestamp expire_time = 5 [
+    json_name = "expireTime",
+    (gnostic.openapi.v3.property) = {description: "会员过期时间"}
+  ]; // 会员过期时间
+
+  optional int32 type = 6 [
+    json_name = "type",
+    (gnostic.openapi.v3.property) = {description: "游戏类型"}
+  ]; // 游戏类型
+
+  optional bool enabled = 7 [
+    json_name = "enabled",
+    (gnostic.openapi.v3.property) = {description: "是否启用"}
+  ]; // 是否启用
+
+  optional int64 emulator_id = 8 [
+    json_name = "emulatorId",
+    (gnostic.openapi.v3.property) = {description: "分配的模拟器ID"}
+  ]; // 分配的模拟器ID
+
+  optional uint32 tenant_id = 20 [
+    json_name = "tenantId",
+    (gnostic.openapi.v3.property) = {description: "租户ID"}
+  ]; // 租户ID
+
+  optional uint32 created_by = 100 [json_name = "createdBy", (gnostic.openapi.v3.property) = {description: "创建者用户ID"}]; // 创建者用户ID
+  optional uint32 updated_by = 101 [json_name = "updatedBy", (gnostic.openapi.v3.property) = {description: "更新者用户ID"}]; // 更新者用户ID
+  optional uint32 deleted_by = 102 [json_name = "deletedBy", (gnostic.openapi.v3.property) = {description: "删除者用户ID"}]; // 删除者用户ID
+
+  optional google.protobuf.Timestamp created_at = 200 [json_name = "createdAt", (gnostic.openapi.v3.property) = {description: "创建时间"}];// 创建时间
+  optional google.protobuf.Timestamp updated_at = 201 [json_name = "updatedAt", (gnostic.openapi.v3.property) = {description: "更新时间"}];// 更新时间
+  optional google.protobuf.Timestamp deleted_at = 202 [json_name = "deletedAt", (gnostic.openapi.v3.property) = {description: "删除时间"}];// 删除时间
+}
+
+// 查询账号列表 - 答复
+message ListAccountResponse {
+  repeated Account items = 1;
+  uint64 total = 2;
+}
+
+// 查询账号详情 - 请求
+message GetAccountRequest {
+  oneof query_by {
+    uint64 id = 1 [
+      (gnostic.openapi.v3.property) = {description: "ID", read_only: true},
+      json_name = "id"
+    ]; // ID
+
+    string user_account = 2 [
+      (gnostic.openapi.v3.property) = {description: "用户账号", read_only: true},
+      json_name = "userAccount"
+    ]; // 用户账号
+  }
+
+  optional google.protobuf.FieldMask view_mask = 100 [
+    json_name = "viewMask",
+    (gnostic.openapi.v3.property) = {
+      description: "视图字段过滤器，用于控制返回的字段"
+    }
+  ]; // 视图字段过滤器
+}
+
+// 创建账号 - 请求
+message CreateAccountRequest {
+  Account data = 1;
+}
+
+// 更新账号 - 请求
+message UpdateAccountRequest {
+  uint64 id = 1;
+
+  Account data = 2;
+
+  google.protobuf.FieldMask update_mask = 3 [
+    (gnostic.openapi.v3.property) = {
+      description: "要更新的字段列表",
+      example: {yaml : "credential,enabled"}
+    },
+    json_name = "updateMask"
+  ]; // 要更新的字段列表
+
+  optional bool allow_missing = 4 [
+    (gnostic.openapi.v3.property) = {description: "如果设置为true的时候，资源不存在则会新增(插入)"},
+    json_name = "allowMissing"
+  ]; // 如果设置为true的时候，资源不存在则会新增(插入)
+}
+
+// 删除账号 - 请求
+message DeleteAccountRequest {
+  oneof query_by {
+    uint64 id = 1 [
+      (gnostic.openapi.v3.property) = {description: "ID", read_only: true},
+      json_name = "id"
+    ]; // ID
+  }
+}
+
+// 续期会员 - 请求
+message RenewMembershipRequest {
+  string user_account = 1 [
+    json_name = "userAccount",
+    (gnostic.openapi.v3.property) = {description: "用户账号"}
+  ]; // 用户账号
+
+  int32 type = 2 [
+    json_name = "type",
+    (gnostic.openapi.v3.property) = {description: "游戏类型"}
+  ]; // 游戏类型
+
+  int32 days = 3 [
+    json_name = "days",
+    (gnostic.openapi.v3.property) = {description: "续期天数"}
+  ]; // 续期天数
+}
+
+message CountAccountResponse {
+  uint64 count = 1;
+}

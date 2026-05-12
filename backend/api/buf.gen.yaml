@@ -63,6 +63,13 @@ managed:
       path: media/service/v1
       value: go-wind-cms/api/gen/go/media/service/v1;mediapb
 
+    - file_option: go_package
+      path: game/service/v1
+      value: go-wind-cms/api/gen/go/game/service/v1;gamepb
+    - file_option: go_package
+      path: game-admin/service/v1
+      value: go-wind-cms/api/gen/go/game-admin/service/v1;gameadminpb
+
 plugins:
   # generate go code
   #- plugin: buf.build/protocolbuffers/go
